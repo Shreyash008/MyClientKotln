@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.DataOutputStream
 import java.io.IOException
 import java.io.PrintWriter
 import java.net.InetAddress
@@ -13,17 +12,19 @@ import java.net.Socket
 
 
 enum class KeyEventName {
-    UP, DOWN, RIGHT, LEFT, CAST, TV_GUIDE
+    UP, DOWN, RIGHT, LEFT, CAST, TV_GUIDE, STOP, BACK, SELECT
 }
 
 class MainActivityViewModel : ViewModel() {
     private var socket: Socket? = null
     private var dataOutputStream: PrintWriter? = null
-    private val IP = "192.168.1.105"
 
-    fun initSocket() {
-        socket = Socket(InetAddress.getByName(IP), 8080)
-        dataOutputStream = PrintWriter(socket!!.getOutputStream(), true)
+    fun initSocket(ip: String) {
+        try{socket = Socket(InetAddress.getByName(ip), 8080)
+        dataOutputStream = PrintWriter(socket!!.getOutputStream(), true)}
+        catch (e:Exception){
+            Log.e("onstreamclient", "catch........${e.message}")
+        }
         Log.e("onstreamclient", ("initsocket $socket..."))
     }
 
@@ -35,10 +36,9 @@ class MainActivityViewModel : ViewModel() {
     fun sendEventToOnStreamApp(keyEventName: KeyEventName) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                Log.e("onstreamclient", ("socket check $socket..."))
                 try {
-                    Log.e("onstreamclient", ("writing ${keyEventName.ordinal}"))
-                    dataOutputStream!!.println(keyEventName.ordinal)
+                    Log.e("onstreamclient", ("writing ${keyEventName.name}"))
+                    dataOutputStream!!.println(keyEventName.name)
                     Log.e("onstreamclient", ("dataoutput ..."))
                 } catch (e: IOException) {
                     Log.e("onstreamclient", ("catch ..."))

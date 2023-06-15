@@ -1,6 +1,7 @@
 package com.example.myclientkotln
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -22,7 +23,9 @@ class MainActivity : AppCompatActivity() {
         mainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
         lifecycleScope.launch(Dispatchers.IO) {
-            mainActivityViewModel.initSocket()
+            binding.button.setOnClickListener {
+                mainActivityViewModel.initSocket(binding.ipTv.text.toString())
+            }
         }
         binding.keypadCast.setOnClickListener {
             mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.CAST)
@@ -44,9 +47,25 @@ class MainActivity : AppCompatActivity() {
             mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.LEFT)
         }
 
+        binding.selectKeypad.setOnClickListener {
+            mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.SELECT)
+        }
+
         binding.keypadTvguide.setOnClickListener {
             mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.TV_GUIDE)
         }
+    }
+
+    override fun onStop() {
+        Log.e("onstreamclient", "onStop is called")
+        mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.STOP)
+        super.onStop()
+    }
+
+    override fun onBackPressed() {
+        Log.e("onstreamclient", "onStop is called")
+        mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.BACK)
+        super.onBackPressed()
     }
 
     override fun onDestroy() {
