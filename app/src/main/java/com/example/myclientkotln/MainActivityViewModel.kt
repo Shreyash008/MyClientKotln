@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.DataOutputStream
 import java.io.IOException
+import java.io.PrintWriter
 import java.net.InetAddress
 import java.net.Socket
 
@@ -17,13 +18,15 @@ enum class KeyEventName {
 
 class MainActivityViewModel : ViewModel() {
     private var socket: Socket? = null
-    private var dataOutputStream: DataOutputStream? = null
-    private val IP = "192.168.42.51"
+    private var dataOutputStream: PrintWriter? = null
+    private val IP = "192.168.1.105"
 
-//    fun initSocket() {
-//        socket = Socket(InetAddress.getByName(IP), 8080)
-//        Log.e("onstreamclient", ("initsocket $socket..."))
-//    }
+    fun initSocket() {
+        socket = Socket(InetAddress.getByName(IP), 8080)
+        dataOutputStream = PrintWriter(socket!!.getOutputStream(), true)
+        Log.e("onstreamclient", ("initsocket $socket..."))
+    }
+
 
     fun disconnect(){
         socket?.close()
@@ -32,12 +35,10 @@ class MainActivityViewModel : ViewModel() {
     fun sendEventToOnStreamApp(keyEventName: KeyEventName) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                socket = Socket(InetAddress.getByName(IP), 8080)
                 Log.e("onstreamclient", ("socket check $socket..."))
-                dataOutputStream = DataOutputStream(socket!!.getOutputStream())
                 try {
                     Log.e("onstreamclient", ("writing ${keyEventName.ordinal}"))
-                    dataOutputStream!!.writeInt(keyEventName.ordinal)
+                    dataOutputStream!!.println(keyEventName.ordinal)
                     Log.e("onstreamclient", ("dataoutput ..."))
                 } catch (e: IOException) {
                     Log.e("onstreamclient", ("catch ..."))

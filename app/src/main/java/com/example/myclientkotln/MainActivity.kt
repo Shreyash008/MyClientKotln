@@ -20,9 +20,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMain11Binding.inflate(layoutInflater)
         setContentView(binding.root)
         mainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
-        /*lifecycleScope.launch(Dispatchers.IO) {
+
+        lifecycleScope.launch(Dispatchers.IO) {
             mainActivityViewModel.initSocket()
-        }*/
+        }
         binding.keypadCast.setOnClickListener {
             mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.CAST)
         }
