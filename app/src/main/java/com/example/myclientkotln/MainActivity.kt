@@ -1,8 +1,12 @@
 package com.example.myclientkotln
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.myclientkotln.databinding.ActivityMain11Binding
@@ -22,11 +26,27 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         mainActivityViewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            binding.button.setOnClickListener {
-                mainActivityViewModel.initSocket(binding.ipTv.text.toString())
+        binding.button.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+                if (binding.ipTv.isVisible) {
+                    mainActivityViewModel.initSocket(binding.ipTv.text.toString()) {
+                        if (it) {
+                            lifecycleScope.launch(Dispatchers.Main)
+                            {
+                                powerOn()
+                            }
+                        }
+                    }
+                } else {
+                    mainActivityViewModel.disconnect()
+                    lifecycleScope.launch(Dispatchers.Main)
+                    { powerOff() }
+
+                }
+
             }
         }
+        supportActionBar?.setDisplayShowTitleEnabled(false)
         binding.keypadCast.setOnClickListener {
             mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.CAST)
         }
@@ -54,12 +74,19 @@ class MainActivity : AppCompatActivity() {
         binding.keypadTvguide.setOnClickListener {
             mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.TV_GUIDE)
         }
+
+        binding.keypadBack.setOnClickListener {
+            mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.BACK)
+        }
     }
 
     override fun onStop() {
-        Log.e("onstreamclient", "onStop is called")
-        mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.STOP)
-        super.onStop()
+        lifecycleScope.launch(Dispatchers.IO) {
+            Log.e("onstreamclient", "onStop is called")
+            mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.STOP)
+            mainActivityViewModel.disconnect()
+            super.onStop()
+        }
     }
 
     override fun onBackPressed() {
@@ -74,4 +101,23 @@ class MainActivity : AppCompatActivity() {
             mainActivityViewModel.disconnect()
         }
     }
+
+    private fun powerOff() {
+        mainActivityViewModel.sendEventToOnStreamApp(KeyEventName.STOP)
+        binding.ipTv.visibility = View.VISIBLE
+        binding.button.setImageResource(R.drawable.power_off)
+    }
+
+    private fun powerOn(){
+        binding.button.setImageResource(R.drawable.power_on)
+        binding.ipTv.clearFocus()
+        minimizeKeyboard()
+        binding.ipTv.visibility = View.INVISIBLE
+    }
+    private fun minimizeKeyboard() {
+        val inputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(binding.ipTv.windowToken, 0)
+    }
+
 }

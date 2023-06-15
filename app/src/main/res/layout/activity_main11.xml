@@ -1,101 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
 
    <ImageView
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toTopOf="parent"
-       android:layout_marginTop="20dp"
        android:id="@+id/onstream_logo"
        android:layout_width="100dp"
        android:layout_height="80dp"
-       android:src="@drawable/onstream_icon"/>
-   <ImageView
+       android:layout_marginTop="20dp"
+       android:src="@drawable/onstream_icon"
        app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintTop_toBottomOf="@id/ip_tv"
-       android:layout_marginTop="30dp"
+       app:layout_constraintTop_toTopOf="parent" />
+
+   <ImageView
        android:id="@+id/keypad_up"
        android:layout_width="60dp"
        android:layout_height="60dp"
-       android:src="@drawable/arrow_circle_up_24"/>
-   <ImageView
-       app:layout_constraintStart_toStartOf="parent"
+       android:layout_marginTop="30dp"
+       android:src="@drawable/arrow_circle_up_24"
+       app:tint="@color/light_grey"
        app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintTop_toBottomOf="@id/keypad_up"
-       android:layout_marginTop="80dp"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@id/button" />
+
+   <ImageView
        android:id="@+id/keypad_down"
        android:layout_width="60dp"
        android:layout_height="60dp"
-       android:src="@drawable/keypad_down_icon"/>
+       android:layout_marginTop="80dp"
+       android:src="@drawable/keypad_down_icon"
+       app:tint="@color/light_grey"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@id/keypad_up" />
+
    <ImageView
-       app:layout_constraintTop_toTopOf="@id/keypad_up"
-       app:layout_constraintEnd_toStartOf="@id/select_keypad"
-       app:layout_constraintBottom_toBottomOf="@id/keypad_down"
        android:id="@+id/keypad_left"
        android:layout_width="60dp"
        android:layout_height="60dp"
-       android:src="@drawable/keypad_left_icon"/>
-   <ImageView
-       app:layout_constraintStart_toEndOf="@id/keypad_down"
-       app:layout_constraintTop_toTopOf="@id/keypad_up"
+       android:src="@drawable/keypad_left_icon"
+       app:tint="@color/light_grey"
        app:layout_constraintBottom_toBottomOf="@id/keypad_down"
+       app:layout_constraintEnd_toStartOf="@id/select_keypad"
+       app:layout_constraintTop_toTopOf="@id/keypad_up" />
+
+   <ImageView
        android:id="@+id/keypad_right"
        android:layout_width="60dp"
        android:layout_height="60dp"
-       android:src="@drawable/keypad_right_icon"/>
+       android:src="@drawable/keypad_right_icon"
+       app:tint="@color/light_grey"
+       app:layout_constraintBottom_toBottomOf="@id/keypad_down"
+       app:layout_constraintStart_toEndOf="@id/keypad_down"
+       app:layout_constraintTop_toTopOf="@id/keypad_up" />
+
    <ImageView
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toEndOf="parent"
-       android:layout_marginTop="30dp"
-       app:layout_constraintTop_toBottomOf="@id/keypad_down"
        android:id="@+id/keypad_cast"
        android:layout_width="60dp"
        android:layout_height="60dp"
-       android:src="@drawable/cast_icon"/>
-   <ImageView
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintEnd_toEndOf="parent"
        android:layout_marginTop="30dp"
-       app:layout_constraintTop_toBottomOf="@id/keypad_cast"
+       android:src="@drawable/cast_icon"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.5"
+       app:layout_constraintStart_toStartOf="parent"
+       app:tint="@color/light_grey"
+       app:layout_constraintTop_toBottomOf="@id/keypad_down" />
+
+   <ImageView
+       android:id="@+id/keypad_back"
+       android:layout_width="60dp"
+       android:layout_height="60dp"
+       android:layout_marginTop="30dp"
+       android:src="@drawable/baseline_arrow_back_24"
+       app:layout_constraintHorizontal_bias="0.5"
+       android:layout_marginEnd="16dp"
+       app:layout_constraintEnd_toStartOf="@+id/keypad_cast"
+       app:layout_constraintTop_toBottomOf="@id/keypad_down"
+       app:tint="@color/light_grey" />
+
+   <ImageView
        android:id="@+id/keypad_tvguide"
        android:layout_width="60dp"
        android:layout_height="60dp"
-       android:src="@drawable/tv_guide_icon"/>
+       android:layout_marginTop="30dp"
+       android:layout_marginStart="16dp"
+       android:src="@drawable/tv_guide_icon"
+       app:tint="@color/light_grey"
+       app:layout_constraintHorizontal_bias="0.5"
+       app:layout_constraintStart_toEndOf="@+id/keypad_cast"
+       app:layout_constraintTop_toBottomOf="@id/keypad_down" />
 
    <EditText
        android:id="@+id/ip_tv"
        android:layout_width="0dp"
-       android:layout_marginStart="10dp"
-       android:layout_marginEnd="10dp"
-       android:textSize="16sp"
        android:layout_height="wrap_content"
-       android:text= "192.168.1.105"
+       android:layout_marginStart="10dp"
        android:layout_marginTop="30dp"
+       android:layout_marginEnd="10dp"
+       android:visibility="visible"
+       android:autofillHints="IP ADDERSS"
+       android:backgroundTint="@android:color/holo_red_dark"
+       android:textSize="16sp"
        app:layout_constraintEnd_toStartOf="@+id/button"
        app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toBottomOf="@+id/onstream_logo" />
+       app:layout_constraintTop_toBottomOf="@+id/onstream_logo"
+       android:inputType="text" />
 
-   <Button
+   <ImageView
        android:id="@+id/button"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginEnd="10dp"
+       android:layout_width="60dp"
+       android:layout_height="60dp"
        android:layout_marginTop="30dp"
-       android:text="Connect"
+       android:layout_marginEnd="10dp"
+       android:text="@string/connect"
+       app:srcCompat="@drawable/power_off"
        app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintTop_toBottomOf="@+id/onstream_logo" />
+       app:layout_constraintTop_toBottomOf="@+id/onstream_logo"
+       android:contentDescription="@string/todo" />
 
    <ImageView
        android:id="@+id/select_keypad"
        android:layout_width="60dp"
        android:layout_height="60dp"
        app:layout_constraintBottom_toTopOf="@+id/keypad_down"
-       app:layout_constraintEnd_toStartOf="@+id/keypad_right"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintTop_toBottomOf="@+id/keypad_up"
-       app:srcCompat="@drawable/ok" />
+       app:srcCompat="@drawable/ok"
+       app:tint="@color/light_grey"
+       android:contentDescription="@string/todo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

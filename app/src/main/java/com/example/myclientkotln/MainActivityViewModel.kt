@@ -19,17 +19,24 @@ class MainActivityViewModel : ViewModel() {
     private var socket: Socket? = null
     private var dataOutputStream: PrintWriter? = null
 
-    fun initSocket(ip: String) {
-        try{socket = Socket(InetAddress.getByName(ip), 8080)
-        dataOutputStream = PrintWriter(socket!!.getOutputStream(), true)}
-        catch (e:Exception){
+    fun initSocket(
+        ip: String,
+        messageCallback: (Boolean) -> Unit
+    ) {
+        Log.d("onstream", "ip : $ip")
+        try {
+            socket = Socket(InetAddress.getByName(ip), 8080)
+            dataOutputStream = PrintWriter(socket!!.getOutputStream(), true)
+            messageCallback(true)
+        } catch (e: Exception) {
             Log.e("onstreamclient", "catch........${e.message}")
         }
         Log.e("onstreamclient", ("initsocket $socket..."))
     }
 
 
-    fun disconnect(){
+    fun disconnect() {
+        dataOutputStream?.close()
         socket?.close()
     }
 
