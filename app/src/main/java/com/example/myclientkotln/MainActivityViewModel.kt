@@ -12,7 +12,7 @@ import java.net.Socket
 
 
 enum class KeyEventName {
-    UP, DOWN, RIGHT, LEFT, CAST, TV_GUIDE, STOP, BACK, SELECT
+    UP, DOWN, RIGHT, LEFT, HOME, TV_GUIDE, STOP, BACK, SELECT
 }
 
 class MainActivityViewModel : ViewModel() {
@@ -25,7 +25,7 @@ class MainActivityViewModel : ViewModel() {
     ) {
         Log.d("onstream", "ip : $ip")
         try {
-            socket = Socket(InetAddress.getByName(ip), 8080)
+            socket = Socket(InetAddress.getByName(ip), 5000)
             dataOutputStream = PrintWriter(socket!!.getOutputStream(), true)
             messageCallback(true)
         } catch (e: Exception) {
